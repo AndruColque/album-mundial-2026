@@ -10,6 +10,8 @@ function App() {
   });
 
   const [collectionStatus, setCollectionStatus] = useState(initialStatus);
+  const [searchText, setSearchText] = useState("");
+  const [statusFilter, setStatusFilter] = useState("todas");
 
   function handleStatusChange(id) {
     setCollectionStatus((previousStatus) => {
@@ -32,12 +34,45 @@ function App() {
     });
   }
 
+  const filteredStickers = stickers.filter((sticker) => {
+    const text = searchText.toLowerCase();
+
+    const matchesSearch =
+      sticker.name.toLowerCase().includes(text) ||
+      sticker.code.toLowerCase().includes(text);
+
+    const matchesStatus =
+      statusFilter === "todas" ||
+      collectionStatus[sticker.id] === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+
   return (
     <div>
       <h1>Álbum Mundial 2026</h1>
 
+      <input
+        type="text"
+        placeholder="Buscar por nombre o número"
+        value={searchText}
+        onChange={(event) => setSearchText(event.target.value)}
+      />
+
+      <select
+        value={statusFilter}
+        onChange={(event) => setStatusFilter(event.target.value)}
+      >
+        <option value="todas">Todas</option>
+        <option value="tengo">Tengo</option>
+        <option value="repetida">Repetidas</option>
+        <option value="falta">Faltan</option>
+      </select>
+
+      <p>Total visibles: {filteredStickers.length}</p>
+
       <div style={{ display: "flex", flexWrap: "wrap" }}>
-        {stickers.map((sticker) => (
+        {filteredStickers.map((sticker) => (
           <StickerCard
             key={sticker.id}
             number={sticker.code}
