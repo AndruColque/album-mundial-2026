@@ -1,4 +1,4 @@
-function StickerCard({ number, name, group, status }) {
+function StickerCard({ number, name, group, status, onClick }) {
   const colors = {
     tengo: "lightgreen",
     repetida: "khaki",
@@ -7,6 +7,7 @@ function StickerCard({ number, name, group, status }) {
 
   return (
     <div
+      onClick={onClick}
       style={{
         backgroundColor: colors[status],
         border: "1px solid gray",
@@ -15,6 +16,7 @@ function StickerCard({ number, name, group, status }) {
         margin: "10px",
         width: "160px",
         textAlign: "center",
+        cursor: "pointer",
       }}
     >
       <h3>{number}</h3>
